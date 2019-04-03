@@ -1,0 +1,6 @@
+name: Export documentation
+description: Export the documentation of the site's content types, paragraphs, and other.
+package: Custom
+
+type: module
+core: 8.x
