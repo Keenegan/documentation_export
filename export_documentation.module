@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_entity_view().
+ */
+function export_documentation_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+
+  echo('<b>Content types</b>');
+  echo '<br>';
+  $types = \Drupal::entityTypeManager()
+    ->getStorage('node_type')
+    ->loadMultiple();
+  foreach ($types as $type) {;
+    echo($type->get('name') . ' - ' . $type->get('description'));
+    $fields = \Drupal::entityManager()->getFieldDefinitions('node', $type->get('name'));
+    echo '<br>';
+    foreach ($fields as $field) {
+      echo $field->getName() . ' ';
+    }
+    echo '<br>';
+  }
+  echo '<br>';
+  echo('<b>Paragraphs types</b>');
+  echo '<br>';
+  $types = \Drupal::entityTypeManager()
+    ->getStorage('paragraphs_type')
+    ->loadMultiple();
+  foreach ($types as $type) {
+    echo($type->get('label') . ' - ' . $type->get('description'));
+    echo '<br>';
+  }
+
+  echo '<br>';
+  echo('<b>Vocabularies</b>');
+  echo '<br>';
+  $types = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_vocabulary')
+    ->loadMultiple();
+  foreach ($types as $type) {
+    echo($type->get('name') . ' - ' . $type->get('description'));
+    echo '<br>';
+  }
+  die();
+}
