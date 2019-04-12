@@ -11,12 +11,13 @@ function export_documentation_entity_view(array &$build, \Drupal\Core\Entity\Ent
     ->getStorage('node_type')
     ->loadMultiple();
   foreach ($types as $type) {;
-    echo($type->get('name') . ' - ' . $type->get('description'));
-    $fields = \Drupal::entityManager()->getFieldDefinitions('node', $type->get('name'));
-    echo '<br>';
-    foreach ($fields as $field) {
-      echo $field->getName() . ' ';
+    echo($type->get('name') . ' - ' . $type->get('description')) . '<br>';
+    foreach (\Drupal::entityManager()->getFieldDefinitions('node', $type->get('type')) as $field_name => $field_definition) {
+      if (!empty($field_definition->getTargetBundle())) {
+        echo $field_definition->getName() . ' ' . $field_definition->getDescription() . '<br>';
+      }
     }
+    echo '<br>';
     echo '<br>';
   }
   echo '<br>';
