@@ -1,4 +1,4 @@
-name: Export documentation
+name: Documentation export
 description: Export the documentation of the site's content types, paragraphs, and other.
 package: Custom
 

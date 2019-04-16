@@ -1,0 +1,7 @@
+documentation_export.configuration:
+  path: '/admin/documentation_export/configuration'
+  defaults:
+    _form: '\Drupal\documentation_export\Form\ConfigurationForm'
+    _title: 'Documentation export settings'
+  requirements:
+    _permission: 'administer site configuration'

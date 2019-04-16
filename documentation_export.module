@@ -3,7 +3,7 @@
 /**
  * Implements hook_entity_view().
  */
-function export_documentation_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function documentation_export_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
 
   echo('<b>Content types</b>');
   echo '<br>';
