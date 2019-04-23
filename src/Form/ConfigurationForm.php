@@ -2,10 +2,10 @@
 
 namespace Drupal\documentation_export\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\documentation_export\DocumentationExportInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigurationForm extends ConfigFormBase {
@@ -15,18 +15,14 @@ class ConfigurationForm extends ConfigFormBase {
 
   protected $moduleHandler;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'documentation_export_settings';
-  }
+  protected $documentationExport;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(ModuleHandlerInterface $moduleHandler) {
+  public function __construct(ModuleHandlerInterface $moduleHandler, DocumentationExportInterface $documentationExport) {
     $this->moduleHandler = $moduleHandler;
+    $this->documentationExport = $documentationExport;
   }
 
   /**
@@ -34,8 +30,16 @@ class ConfigurationForm extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('module_handler')
+      $container->get('module_handler'),
+      $container->get('documentation_export_service')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'documentation_export_settings';
   }
 
   /**
@@ -56,8 +60,14 @@ class ConfigurationForm extends ConfigFormBase {
     $form['content_types'] = [
       '#type' => 'checkboxes',
       '#options' => $this->getSupportedOptions(),
-      '#title' => $this->t('Which entities shoudld be exported.'),
+      '#title' => $this->t('Which entities should be exported.'),
       '#default_value' => $config->get('content_types'),
+    ];
+
+    $form['export'] = [
+      '#type' => 'submit',
+      '#value' => 'Export',
+      '#submit' => [[$this, 'exportConfiguration']],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -83,5 +93,9 @@ class ConfigurationForm extends ConfigFormBase {
     $this->moduleHandler->moduleExists('paragraphs') ? $result['paragraphs_type'] = $this->t('Paragraph') : NULL;
 
     return $result;
+  }
+
+  public function exportConfiguration() {
+    $this->documentationExport->exportDocumentation();
   }
 }
