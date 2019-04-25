@@ -2,4 +2,5 @@ services:
   documentation_export_service:
     class: Drupal\documentation_export\DocumentationExport
     arguments:
-      - '@http_client'
+      - '@config.factory'
+      - '@entity_type.manager'
