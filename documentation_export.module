@@ -60,3 +60,17 @@ function _test($bundle) {
     }
   }
 }
+
+/**
+ * Implements hook_help().
+ */
+function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  //@TODO write help function.
+}
+
+/**
+ * Implements hook_theme().
+ */
+function documentation_export_theme($existing, $type, $theme, $path) {
+
+}

@@ -5,3 +5,12 @@ documentation_export.configuration:
     _title: 'Documentation export settings'
   requirements:
     _permission: 'administer site configuration'
+
+documentation_export.html:
+  path: '/admin/documentation_export/html'
+  defaults:
+    _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::exportToHtml'
+    _title: 'Documentation'
+  requirements:
+    #TODO : create permission
+    _access: 'TRUE'
