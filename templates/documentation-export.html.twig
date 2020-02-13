@@ -1,27 +1,19 @@
 {% for entity_type in data %}
   {% for entity in entity_type %}
     <caption>
-      Nom : {{ entity.name }} <br>
-      Description : {{ entity.description }}
+      <h2>Nom : {{ entity.label }}{{ entity.name }} </h2>
+      <h3>Description : {{ entity.description }}</h3>
     </caption>
-    {% for field in entity.fields %}
-      <table>
-        <thead>
-        <tr>
-          <th>Label</th>
-          <th>Description</th>
-          <th>Requis</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>{{ field.label }}</td>
-          <td>{{ field.description }}</td>
-          <td>{{ field.required }}</td>
-        </tr>
-        </tbody>
-      </table>
+
+    {% for field_type,fields in entity.fields %}
+      {% if field_type == 'file' %}
+        {% include '@documentation_export/fields/file-field.html.twig' %}
+      {% else %}
+        {% include '@documentation_export/fields/default-field.html.twig' %}
+      {% endif %}
+
     {% endfor %}
+
   {% endfor %}
 {% endfor %}
 

@@ -1,0 +1,20 @@
+<table>
+  <thead>
+  <tr>
+    <th>Label</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Requis</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for field in fields %}
+  <tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field.field_type }}</td>
+    <td>{{ field.description }}</td>
+    <td>{{ field.required }}</td>
+  <tr>
+    {% endfor %}
+  </tbody>
+</table>
