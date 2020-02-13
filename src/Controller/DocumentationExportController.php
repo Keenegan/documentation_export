@@ -26,18 +26,9 @@ class DocumentationExportController extends ControllerBase {
   }
 
   public function exportToHtml() {
-    $data = $this->documentationExport->exportDocumentation();
-    $rows = [
-      [
-        ['data' => $this->t('Node'), 'header' => TRUE],
-      ],
-      [
-        ['data' => $this->t('Paragraphs'), 'header' => TRUE],
-      ],
-    ];
     return $build['dblog_table'] = [
-      '#type' => 'table',
-      '#rows' => $data,
+      '#theme' => 'documentation_export',
+      '#data' => $this->documentationExport->exportDocumentation(),
     ];
   }
 

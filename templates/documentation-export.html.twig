@@ -1,0 +1,27 @@
+{% for entity_type in data %}
+  {% for entity in entity_type %}
+    <caption>
+      Nom : {{ entity.name }} <br>
+      Description : {{ entity.description }}
+    </caption>
+    {% for field in entity.fields %}
+      <table>
+        <thead>
+        <tr>
+          <th>Label</th>
+          <th>Description</th>
+          <th>Requis</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{ field.label }}</td>
+          <td>{{ field.description }}</td>
+          <td>{{ field.required }}</td>
+        </tr>
+        </tbody>
+      </table>
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+

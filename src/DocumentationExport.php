@@ -26,41 +26,49 @@ class DocumentationExport implements DocumentationExportInterface {
     $this->entityFieldManager = $entityFieldManager;
   }
 
-  public function getConfiguration() {
-  }
-
   public function exportDocumentation() {
-    $test = ['node_type'];
     //foreach ($this->configFactory->get('content_types') as $contentType) {
-    foreach ($test as $contentType) {
-      $this->getDocumentationData($contentType);
+    foreach (['node_type'] as $entity_type_id) {
+      $data[$entity_type_id] = $this->getDocumentationData($entity_type_id);
     }
+    return $data;
   }
 
-  public function getDocumentationData($contentType) {
-    $data = [];
-    try {
-      $types = $this->entityTypeManager->getStorage($contentType)
-        ->loadMultiple();
-    }
-    catch (\Exception $exception) {
+  public function getDocumentationData($entity_type_id) {
+    //@TODO reduce this ?
+    $storage = $this->getStorage($entity_type_id);
+    if ($storage === NULL) {
       return NULL;
     }
-    foreach ($types as $type) {
-      $data[$type->bundle()] = [
-        'name' => $type->get('name'),
-        'description' => $type->get('description'),
-      ];
-      //echo ($type->get('name') . ' - ' . $type->get('description')) . '<br>';
-      foreach ($this->entityFieldManager->getFieldDefinitions('node', $type->id()) as $field_name => $field_definition) {
+
+    $data = [];
+    foreach ($storage->loadMultiple() as $entity) {
+      $data[$entity->id()] = $entity->toArray();
+      foreach ($this->entityFieldManager->getFieldDefinitions('node', $entity->id()) as $field_name => $field_definition) {
+        /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if (!empty($field_definition->getTargetBundle())) {
-          $data[$type->bundle()]['fields'][$field_definition->getName()] = $field_definition->getDescription();
+          $data[$entity->id()]['fields'][$field_definition->getName()] = $field_definition->toArray();
         }
       }
     }
     return $data;
   }
 
-
+  /**
+   * Creates a new storage instance.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID for this storage.
+   *
+   * @return \Drupal\Core\Entity\EntityStorageInterface|null
+   */
+  private function getStorage($entity_type_id) {
+    try {
+      return $this->entityTypeManager->getStorage($entity_type_id);
+    }
+    catch (\Exception $exception) {
+      return NULL;
+    }
+  }
 
 }

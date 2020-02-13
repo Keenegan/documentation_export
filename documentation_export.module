@@ -1,67 +1,6 @@
 <?php
 
 /**
- * Implements hook_entity_view().
- */
-function documentation_export_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-
-  echo('<b>Content types</b>');
-  echo '<br>';
-  $types = \Drupal::entityTypeManager()
-    ->getStorage('node_type')
-    ->loadMultiple();
-  foreach ($types as $type) {;
-    echo($type->get('name') . ' - ' . $type->get('description')) . '<br>';
-    foreach (\Drupal::entityManager()->getFieldDefinitions('node', $type->get('type')) as $field_name => $field_definition) {
-      if (!empty($field_definition->getTargetBundle())) {
-        echo $field_definition->getName() . ' ' . $field_definition->getDescription() . '<br>';
-      }
-    }
-    echo '<br>';
-    echo '<br>';
-  }
-  echo '<br>';
-  echo('<b>Paragraphs types</b>');
-  echo '<br>';
-  $types = \Drupal::entityTypeManager()
-    ->getStorage('paragraphs_type')
-    ->loadMultiple();
-  foreach ($types as $type) {
-    echo($type->get('label') . ' - ' . $type->get('description'));
-    echo '<br>';
-  }
-  echo '<br>';
-  echo('<b>Vocabularies</b>');
-  echo '<br>';
-  $types = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_vocabulary')
-    ->loadMultiple();
-  foreach ($types as $type) {
-    echo($type->get('name') . ' - ' . $type->get('description'));
-    echo '<br>';
-  }
-  die();
-}
-
-function _test($bundle) {
-  $definitions = \Drupal::entityManager()->getDefinitions();
-  $entity_type = $definitions[$bundle];
-  foreach (\Drupal::entityManager()->getDefinitions() as $type => $entity_type) {
-    if ($bundle_entity_type = $entity_type->getBundleEntityType()) {
-      foreach ($this->entityTypeManager->getStorage($bundle_entity_type)->loadMultiple() as $entity) {
-        $this->bundleInfo[$type][$entity->id()]['label'] = $entity->label();
-      }
-    }
-    // If entity type bundles are not supported and
-    // hook_entity_bundle_info() has not already set up bundle
-    // information, use the entity type name and label.
-    elseif (!isset($this->bundleInfo[$type])) {
-      $this->bundleInfo[$type][$type]['label'] = $entity_type->getLabel();
-    }
-  }
-}
-
-/**
  * Implements hook_help().
  */
 function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
@@ -72,5 +11,11 @@ function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchI
  * Implements hook_theme().
  */
 function documentation_export_theme($existing, $type, $theme, $path) {
-
+  return [
+    'documentation_export' => [
+      'variables' => [
+        'data' => NULL,
+      ],
+    ],
+  ];
 }
