@@ -27,8 +27,7 @@ class DocumentationExport implements DocumentationExportInterface {
   }
 
   public function exportDocumentation() {
-    //foreach ($this->configFactory->get('content_types') as $contentType) {
-    foreach (['node_type'] as $entity_type_id) {
+    foreach (['node_type', 'paragraphs_type'] as $entity_type_id) {
       $data[$entity_type_id] = $this->getDocumentationData($entity_type_id);
     }
     return $data;
@@ -44,7 +43,7 @@ class DocumentationExport implements DocumentationExportInterface {
     $data = [];
     foreach ($storage->loadMultiple() as $entity) {
       $data[$entity->id()] = $entity->toArray();
-      foreach ($this->entityFieldManager->getFieldDefinitions('node', $entity->id()) as $field_name => $field_definition) {
+      foreach ($this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id()) as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if (!empty($field_definition->getTargetBundle())) {
           $data[$entity->id()]['fields'][$field_definition->getName()] = $field_definition->toArray();
