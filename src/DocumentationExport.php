@@ -5,6 +5,7 @@ namespace Drupal\documentation_export;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\field\Entity\FieldConfig;
 
 class DocumentationExport implements DocumentationExportInterface {
 
@@ -45,8 +46,8 @@ class DocumentationExport implements DocumentationExportInterface {
       $data[$entity->id()] = $entity->toArray();
       foreach ($this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id()) as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-        if (!empty($field_definition->getTargetBundle())) {
-          $data[$entity->id()]['fields'][$field_definition->getName()] = $field_definition->toArray();
+        if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
+          $data[$entity->id()]['fields'][$field_definition->get('field_type')][$field_definition->getName()] = $field_definition->toArray();
         }
       }
     }
