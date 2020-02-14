@@ -47,11 +47,37 @@ class DocumentationExport implements DocumentationExportInterface {
       foreach ($this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id()) as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
-          $data[$entity->id()]['fields'][$field_definition->get('field_type')][$field_definition->getName()] = $field_definition->toArray();
+          $field_type = $this->getFieldType($field_definition);
+          $data[$entity->id()]['fields'][$field_type][$field_definition->getName()] = $field_definition->toArray();
         }
       }
     }
     return $data;
+  }
+
+  /**
+   * @param \Drupal\field\Entity\FieldConfig $field_definition
+   *
+   * @return string
+   */
+  private function getFieldType($field_definition) {
+    $field_type = $field_definition->get('field_type');
+    switch ($field_type) {
+      case 'integer':
+      case 'float':
+      case 'decimal':
+        return 'number';
+        break;
+      case 'text_with_summary':
+      case 'string':
+      case 'string_long':
+      case 'text':
+      case 'text_long':
+        return 'text';
+        break;
+      default:
+        return $field_type;
+    }
   }
 
   /**

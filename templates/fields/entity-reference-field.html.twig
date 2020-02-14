@@ -4,9 +4,7 @@
     <th>Label</th>
     <th>Type</th>
     <th>Description</th>
-    <th>Répertoire d'image</th>
-    <th>Extensions autorisées</th>
-    <th>Taille maximum d'upload</th>
+    <th>Entité(s) référencée(s)</th>
   </tr>
   </thead>
   <tbody>
@@ -15,9 +13,12 @@
     <td>{{ field.label }}</td>
     <td>{{ field.field_type }}</td>
     <td>{{ field.description }}</td>
-    <td>{{ field.settings.file_directory }}</td>
-    <td>{{ field.settings.file_extensions }}</td>
-    <td>{{ field.settings.max_filesize ? '' : '-' }}</td>
+    <td>
+      {% for target in field.settings.handler_settings.target_bundles %}
+        {{ target | capitalize }}
+        {% if not loop.last %}-{% endif %}
+      {% endfor %}
+    </td>
   <tr>
     {% endfor %}
   </tbody>
