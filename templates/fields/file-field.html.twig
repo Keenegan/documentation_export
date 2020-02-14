@@ -1,24 +1,22 @@
-<table>
-  <thead>
-  <tr>
-    <th>Label</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Répertoire d'image</th>
-    <th>Extensions autorisées</th>
-    <th>Taille maximum d'upload</th>
-  </tr>
-  </thead>
-  <tbody>
-  {% for field in fields %}
-  <tr>
-    <td>{{ field.label }}</td>
-    <td>{{ field.field_type }}</td>
-    <td>{{ field.description }}</td>
-    <td>{{ field.settings.file_directory }}</td>
-    <td>{{ field.settings.file_extensions }}</td>
-    <td>{{ field.settings.max_filesize ? '' : '-' }}</td>
-  <tr>
-    {% endfor %}
-  </tbody>
-</table>
+<thead>
+<tr>
+  <th>Label</th>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Répertoire d'image</th>
+  <th>Extensions autorisées</th>
+  <th>Taille maximum d'upload</th>
+</tr>
+</thead>
+<tbody>
+{% for field in fields %}
+<tr>
+  <td>{{ field.label }}</td>
+  <td>{{ field.field_type }}</td>
+  <td>{{ field.description }}</td>
+  <td>{{ field.settings.file_directory }}</td>
+  <td>{{ field.settings.file_extensions }}</td>
+  <td>{{ field.settings.max_filesize ? '' : '-' }}</td>
+<tr>
+  {% endfor %}
+</tbody>

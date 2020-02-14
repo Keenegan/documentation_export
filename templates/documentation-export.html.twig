@@ -4,15 +4,15 @@
       <h2>Nom : {{ entity.label }}{{ entity.name }} </h2>
       <h3>Description : {{ entity.description }}</h3>
     </caption>
-
-    {% for field_type,fields in entity.fields %}
-      {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
-      {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
-      {% elseif field_type == 'text' %} {% include '@documentation_export/fields/text-field.html.twig' %}
-      {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}
-      {% else %} {% include '@documentation_export/fields/default-field.html.twig' %} {% endif %}
-    {% endfor %}
-
+    <table>
+      {% for field_type,fields in entity.fields %}
+        {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
+        {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
+        {% elseif field_type == 'text' %} {% include '@documentation_export/fields/text-field.html.twig' %}
+        {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}
+        {% else %} {% include '@documentation_export/fields/default-field.html.twig' %} {% endif %}
+      {% endfor %}
+    </table>
   {% endfor %}
 {% endfor %}
 
