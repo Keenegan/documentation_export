@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\field\Entity\FieldConfig;
 
-class DocumentationExport implements DocumentationExportInterface {
+class DocumentationExport {
 
   protected $configFactory;
 

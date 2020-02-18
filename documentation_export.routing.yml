@@ -6,10 +6,10 @@ documentation_export.configuration:
   requirements:
     _permission: 'administer site configuration'
 
-documentation_export.html:
-  path: '/admin/documentation_export/html'
+documentation_export.entities:
+  path: '/admin/documentation_export/entities'
   defaults:
-    _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::exportToHtml'
+    _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::exportEntities'
     _title: 'Documentation'
   requirements:
     #TODO : create permission

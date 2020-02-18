@@ -3,7 +3,7 @@
 namespace Drupal\documentation_export\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\documentation_export\DocumentationExportInterface;
+use Drupal\documentation_export\DocumentationExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,7 +15,7 @@ class DocumentationExportController extends ControllerBase {
 
   protected $documentationExport;
 
-  public function __construct(DocumentationExportInterface $documentationExport) {
+  public function __construct(DocumentationExport $documentationExport) {
     $this->documentationExport = $documentationExport;
   }
 
@@ -25,7 +25,7 @@ class DocumentationExportController extends ControllerBase {
     );
   }
 
-  public function exportToHtml() {
+  public function exportEntities() {
     return $build['dblog_table'] = [
       '#theme' => 'documentation_export',
       '#data' => $this->documentationExport->exportDocumentation(),
