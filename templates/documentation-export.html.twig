@@ -1,7 +1,7 @@
 {% for entity_type in data %}
   {% for entity in entity_type %}
     <caption>
-      <h2>Nom : {{ entity.label }}{{ entity.name }} </h2>
+      <h2>Entité : {{ entity.label }}{{ entity.name }} ({{ entity.type }}{{ entity.id }})</h2>
       <h3>Description : {{ entity.description }}</h3>
     </caption>
     <table>

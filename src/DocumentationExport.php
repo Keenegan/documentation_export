@@ -15,8 +15,6 @@ class DocumentationExport implements DocumentationExportInterface {
 
   protected $entityFieldManager;
 
-  protected $documentationData = [];
-
   public function __construct(
     ConfigFactoryInterface $configFactory,
     EntityTypeManagerInterface $entityTypeManager,
@@ -61,6 +59,7 @@ class DocumentationExport implements DocumentationExportInterface {
    * @return string
    */
   private function getFieldType($field_definition) {
+    //@TODO use CategorizingPluginManagerTrait instead of this ?
     $field_type = $field_definition->get('field_type');
     switch ($field_type) {
       case 'integer':

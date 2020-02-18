@@ -15,7 +15,7 @@
   <td>
     {% for target in field.settings.handler_settings.target_bundles %}
       {{ target | capitalize }}
-      {% if not loop.last %}-{% endif %}
+      {{ not loop.last ? '-' }}
     {% endfor %}
   </td>
 <tr>
