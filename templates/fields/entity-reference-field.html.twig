@@ -1,4 +1,4 @@
-{% for target in field.settings.handler_settings.target_bundles %}
+{% for target in field.field_config.getSettings.handler_settings.target_bundles %}
   {{ loop.first ? 'Entitées autorisées:' }}
   {{ target | capitalize }}
   {{ not loop.last ? '-' }}

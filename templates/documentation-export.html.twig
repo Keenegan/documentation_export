@@ -8,9 +8,11 @@
     <table>
       <thead>
       <tr>
-        <th>Label</th>
-        <th>Type</th>
+        <th>Étiquette</th>
+        <th>Nom système</th>
+        <th>Type de champ</th>
         <th>Description</th>
+        <th>Cardinalité</th>
         <th>Informations complémentaires</th>
       </tr>
       </thead>
@@ -18,9 +20,11 @@
         <tbody>
         {% for field in fields %}
         <tr>
-          <td>{{ field.label }}</td>
-          <td>{{ field.field_type }}</td>
-          <td>{{ field.description }}</td>
+          <td>{{ field.field_config.label }}</td>
+          <td>{{ field.field_config.getName }}</td>
+          <td>{{ field.field_config.getType }}</td>
+          <td>{{ field.field_config.description }}</td>
+          <td>{{ field.field_storage_config.getCardinality }}</td>
           <td>
             {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
             {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}

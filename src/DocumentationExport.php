@@ -42,11 +42,15 @@ class DocumentationExport {
     $data = [];
     foreach ($storage->loadMultiple() as $entity) {
       $data[$entity->id()] = $entity->toArray();
-      foreach ($this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id()) as $field_name => $field_definition) {
+      $fields = $this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id());
+      foreach ($fields as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
           $field_type = $this->getFieldType($field_definition);
-          $data[$entity->id()]['fields'][$field_type][$field_definition->getName()] = $field_definition->toArray();
+          $data[$entity->id()]['fields'][$field_type][$field_definition->getName()] = [
+            'field_config' => $field_definition,
+            'field_storage_config' => $field_definition->getFieldStorageDefinition(),
+          ];
         }
       }
     }
