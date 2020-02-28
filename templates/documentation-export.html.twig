@@ -11,15 +11,25 @@
         <th>Label</th>
         <th>Type</th>
         <th>Description</th>
-        <th>Divers</th>
+        <th>Informations complémentaires</th>
       </tr>
       </thead>
       {% for field_type,fields in entity.fields %}
-        {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
-        {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
-        {% elseif field_type == 'text' %} {% include '@documentation_export/fields/text-field.html.twig' %}
-        {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}
-        {% else %} {% include '@documentation_export/fields/default-field.html.twig' %} {% endif %}
+        <tbody>
+        {% for field in fields %}
+        <tr>
+          <td>{{ field.label }}</td>
+          <td>{{ field.field_type }}</td>
+          <td>{{ field.description }}</td>
+          <td>
+            {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
+            {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
+            {% elseif field_type == 'text' %} {% include '@documentation_export/fields/text-field.html.twig' %}
+            {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}{% endif %}
+          </td>
+        <tr>
+          {% endfor %}
+        </tbody>
       {% endfor %}
     </table>
   {% endfor %}

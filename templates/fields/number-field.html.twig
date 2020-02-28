@@ -1,13 +1,2 @@
-<tbody>
-{% for field in fields %}
-<tr>
-  <td>{{ field.label }}</td>
-  <td>{{ field.field_type }}</td>
-  <td>{{ field.description }}</td>
-  <td>
-    {{ field.settings.min ? 'Min: '~field.settings.min }}
-    {{ field.settings.max ? 'Max: '~field.settings.max }}
-  </td>
-<tr>
-  {% endfor %}
-</tbody>
+{{ field.settings.min ? 'Min: '~field.settings.min }}
+{{ field.settings.max ? 'Max: '~field.settings.max }}

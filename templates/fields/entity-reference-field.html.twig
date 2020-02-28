@@ -1,16 +1,5 @@
-<tbody>
-{% for field in fields %}
-<tr>
-  <td>{{ field.label }}</td>
-  <td>{{ field.field_type }}</td>
-  <td>{{ field.description }}</td>
-  <td>
-    {% for target in field.settings.handler_settings.target_bundles %}
-      {{ loop.first ? 'Entitées autorisées:' }}
-      {{ target | capitalize }}
-      {{ not loop.last ? '-' }}
-    {% endfor %}
-  </td>
-<tr>
-  {% endfor %}
-</tbody>
+{% for target in field.settings.handler_settings.target_bundles %}
+  {{ loop.first ? 'Entitées autorisées:' }}
+  {{ target | capitalize }}
+  {{ not loop.last ? '-' }}
+{% endfor %}
