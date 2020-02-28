@@ -1,11 +1,3 @@
-<thead>
-<tr>
-  <th>Label</th>
-  <th>Type</th>
-  <th>Description</th>
-  <th>Entité(s) référencée(s)</th>
-</tr>
-</thead>
 <tbody>
 {% for field in fields %}
 <tr>
@@ -14,6 +6,7 @@
   <td>{{ field.description }}</td>
   <td>
     {% for target in field.settings.handler_settings.target_bundles %}
+      {{ loop.first ? 'Entitées autorisées:' }}
       {{ target | capitalize }}
       {{ not loop.last ? '-' }}
     {% endfor %}

@@ -3,9 +3,17 @@
   {% for entity in entities_type %}
     <caption>
       <h2>{{ entity.label }}{{ entity.name }} ({{ entity.type }}{{ entity.id }}{{ entity.vid }})</h2>
-      <h3>Description : {{ entity.description }}</h3>
+      Description : {{ entity.description }}
     </caption>
     <table>
+      <thead>
+      <tr>
+        <th>Label</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Divers</th>
+      </tr>
+      </thead>
       {% for field_type,fields in entity.fields %}
         {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
         {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
