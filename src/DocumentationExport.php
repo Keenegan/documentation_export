@@ -31,6 +31,7 @@ class DocumentationExport {
   }
 
   public function exportDocumentation() {
+    //TODO get this entities from a config form.
     foreach (['node_type', 'paragraphs_type'] as $entity_type_id) {
       $data[$entity_type_id] = $this->getDocumentationData($entity_type_id);
     }
