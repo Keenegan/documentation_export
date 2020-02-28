@@ -5,3 +5,4 @@ services:
       - '@config.factory'
       - '@entity_type.manager'
       - '@entity_field.manager'
+      - '@plugin.manager.field.field_type'

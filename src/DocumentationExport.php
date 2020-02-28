@@ -5,6 +5,7 @@ namespace Drupal\documentation_export;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\field\Entity\FieldConfig;
 
 class DocumentationExport {
@@ -15,14 +16,18 @@ class DocumentationExport {
 
   protected $entityFieldManager;
 
+  protected $fieldTypeManager;
+
   public function __construct(
     ConfigFactoryInterface $configFactory,
     EntityTypeManagerInterface $entityTypeManager,
-    EntityFieldManagerInterface $entityFieldManager
+    EntityFieldManagerInterface $entityFieldManager,
+    FieldTypePluginManagerInterface $fieldTypePluginManager
   ) {
     $this->configFactory = $configFactory->get('documentation_export.settings');
     $this->entityTypeManager = $entityTypeManager;
     $this->entityFieldManager = $entityFieldManager;
+    $this->fieldTypeManager = $fieldTypePluginManager;
   }
 
   public function exportDocumentation() {
@@ -47,9 +52,12 @@ class DocumentationExport {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
           $field_type = $this->getFieldType($field_definition);
+
+          //TODO use FieldConfigListBuilder to create the list ?
           $data[$entity->id()]['fields'][$field_type][$field_definition->getName()] = [
             'field_config' => $field_definition,
             'field_storage_config' => $field_definition->getFieldStorageDefinition(),
+            'field_type' => $this->fieldTypeManager->getDefinitions()[$field_definition->getType()]['label']
           ];
         }
       }
