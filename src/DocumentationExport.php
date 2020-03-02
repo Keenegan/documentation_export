@@ -32,20 +32,18 @@ class DocumentationExport {
 
   public function exportDocumentation() {
     //TODO get this entities from a config form.
-    //TODO Accounts ?.
+    //TODO Accounts ?
     foreach (['node_type', 'paragraphs_type', 'taxonomy_vocabulary', 'media_type'] as $entity_type_id) {
-      $data[$entity_type_id] = $this->getDocumentationData($entity_type_id);
+      $storage = $this->getStorage($entity_type_id);
+      if ($storage) {
+        //TODO Find a way to convert node to Node or taxonomy_term to Taxonomy term.
+        $data[$storage->getEntityType()->getBundleOf()] = $this->getDocumentationData($entity_type_id, $storage);
+      }
     }
     return $data;
   }
 
-  public function getDocumentationData($entity_type_id) {
-    //@TODO reduce this ?
-    $storage = $this->getStorage($entity_type_id);
-    if ($storage === NULL) {
-      return NULL;
-    }
-
+  public function getDocumentationData($entity_type_id, $storage) {
     $data = [];
     foreach ($storage->loadMultiple() as $entity) {
       $data[$entity->label()]['entity'] = $entity;
