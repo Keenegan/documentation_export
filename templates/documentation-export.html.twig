@@ -20,7 +20,7 @@
         <tbody>
         {% for field in fields %}
         <tr>
-          <td>{{ field.field_config.label }}</td>
+          <td>{{ field.field_config |field_linker }}</td>
           <td>{{ field.field_config.getName }}</td>
           <td>{{ field.field_type }}</td>
           <td>{{ field.field_config.description }}</td>
