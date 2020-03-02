@@ -25,7 +25,13 @@
           <td>{{ field.field_config.getName }}</td>
           <td>{{ field.field_type }}</td>
           <td>{{ field.field_config.description }}</td>
-          <td>{{ field.field_config.getFieldStorageDefinition.getCardinality }}</td>
+          <td>
+            {% if field.field_config.getFieldStorageDefinition.getCardinality == -1 %}
+              {{ 'No limit' | t }}
+            {% else %}
+              {{ field.field_config.getFieldStorageDefinition.getCardinality }}
+            {% endif %}
+          </td>
           <td>
             {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
             {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
