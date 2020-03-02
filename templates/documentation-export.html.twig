@@ -2,8 +2,9 @@
   <h1>{{ 'Entitées' |t }} : {{ entity_type }}</h1>
   {% for entity in entities_type %}
     <caption>
-      <h2>{{ entity.label }}{{ entity.name }} ({{ entity.type }}{{ entity.id }}{{ entity.vid }})</h2>
-      {{ 'Description' |t }} : {{ entity.description }}
+      <h2>{{ entity.entity.label }}</h2>
+      {{ 'Machine name' |t }} : {{ entity.entity.id }}<br>
+      {{ 'Description' |t }} : {{ entity.entity.description }}
     </caption>
     <table>
       <thead>
@@ -11,8 +12,8 @@
         <th>{{ 'Label' |t }}</th>
         <th>{{ 'Machine name' | t }}</th>
         <th>{{ 'Field type' | t }}</th>
-        <th>{{ 'Description' |t }}</th>
-        <th>{{ 'Cardinality' |t }}</th>
+        <th>{{ 'Description' | t }}</th>
+        <th>{{ 'Cardinality' | t }}</th>
         <th>{{ 'Field info' | t }}</th>
       </tr>
       </thead>
@@ -24,7 +25,7 @@
           <td>{{ field.field_config.getName }}</td>
           <td>{{ field.field_type }}</td>
           <td>{{ field.field_config.description }}</td>
-          <td>{{ field.field_storage_config.getCardinality }}</td>
+          <td>{{ field.field_config.getFieldStorageDefinition.getCardinality }}</td>
           <td>
             {% if field_type == 'file' %} {% include '@documentation_export/fields/file-field.html.twig' %}
             {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}

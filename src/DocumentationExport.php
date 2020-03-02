@@ -48,7 +48,7 @@ class DocumentationExport {
 
     $data = [];
     foreach ($storage->loadMultiple() as $entity) {
-      $data[$entity->id()] = $entity->toArray();
+      $data[$entity->label()]['entity'] = $entity;
       $fields = $this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id());
       foreach ($fields as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
@@ -56,9 +56,8 @@ class DocumentationExport {
           $field_type = $this->getFieldType($field_definition);
 
           //TODO use FieldConfigListBuilder to create the list ?
-          $data[$entity->id()]['fields'][$field_type][$field_definition->getName()] = [
+          $data[$entity->label()]['fields'][$field_type][$field_definition->getName()] = [
             'field_config' => $field_definition,
-            'field_storage_config' => $field_definition->getFieldStorageDefinition(),
             'field_type' => $this->fieldTypeManager->getDefinitions()[$field_definition->getType()]['label']
           ];
         }
