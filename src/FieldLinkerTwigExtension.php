@@ -2,6 +2,7 @@
 
 namespace Drupal\documentation_export;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\field\Entity\FieldConfig;
 
@@ -48,7 +49,16 @@ class FieldLinkerTwigExtension extends \Twig_Extension {
     }
   }
 
-  public function entityLinker($entity) {
+  /**
+   * Get the link to an entity.
+   *
+   * @param EntityInterface $entity
+   *   The entity to link.
+   *
+   * @return \Drupal\Core\Link|string|null
+   *   The returned link.
+   */
+  public function entityLinker(EntityInterface $entity) {
     try {
       $url = $entity->toUrl();
       return Link::fromTextAndUrl($entity->label(), $url);
