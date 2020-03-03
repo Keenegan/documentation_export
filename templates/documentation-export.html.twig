@@ -1,5 +1,5 @@
 {% for entity_type,entities_type in data %}
-  <h1>{{ 'Entitées' |t }} : {{ entity_type }}</h1>
+  <h1>{{ 'Entities' |t }} : {{ entity_type }}</h1>
   {% for entity in entities_type %}
     <caption>
       <h3>{{ entity.entity|entity_linker }}</h3>
