@@ -5,35 +5,45 @@ namespace Drupal\documentation_export;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\field\Entity\FieldConfig;
 
 class DocumentationExport {
 
   protected $configFactory;
+
   protected $entityTypeManager;
+
   protected $entityFieldManager;
+
   protected $fieldTypeManager;
+
+  protected $moduleHandler;
 
   public function __construct(
     ConfigFactoryInterface $configFactory,
     EntityTypeManagerInterface $entityTypeManager,
     EntityFieldManagerInterface $entityFieldManager,
-    FieldTypePluginManagerInterface $fieldTypePluginManager
+    FieldTypePluginManagerInterface $fieldTypePluginManager,
+    ModuleHandlerInterface $moduleHandler
   ) {
     $this->configFactory = $configFactory->get('documentation_export.settings');
     $this->entityTypeManager = $entityTypeManager;
     $this->entityFieldManager = $entityFieldManager;
     $this->fieldTypeManager = $fieldTypePluginManager;
+    $this->moduleHandler = $moduleHandler;
   }
 
   public function exportDocumentation() {
     //TODO Accounts ?
+    $data = [];
     foreach ($this->configFactory->get('content_types') as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
       if ($storage) {
         //TODO Find a way to convert node to Node or taxonomy_term to Taxonomy term.
-        $data[$storage->getEntityType()->getBundleOf()] = $this->getDocumentationData($entity_type_id, $storage);
+        $data[$storage->getEntityType()
+          ->getBundleOf()] = $this->getDocumentationData($entity_type_id, $storage);
       }
     }
     return $data;
@@ -43,7 +53,8 @@ class DocumentationExport {
     $data = [];
     foreach ($storage->loadMultiple() as $entity) {
       $data[$entity->label()]['entity'] = $entity;
-      $fields = $this->entityFieldManager->getFieldDefinitions($storage->getEntityType()->getBundleOf(), $entity->id());
+      $fields = $this->entityFieldManager->getFieldDefinitions($storage->getEntityType()
+        ->getBundleOf(), $entity->id());
       foreach ($fields as $field_name => $field_definition) {
         /** @var \Drupal\field\Entity\FieldConfig $field_definition */
         if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
@@ -52,7 +63,7 @@ class DocumentationExport {
           //TODO use FieldConfigListBuilder to create the list ?
           $data[$entity->label()]['fields'][$field_type][$field_definition->getName()] = [
             'field_config' => $field_definition,
-            'field_type' => $this->fieldTypeManager->getDefinitions()[$field_definition->getType()]['label']
+            'field_type' => $this->fieldTypeManager->getDefinitions()[$field_definition->getType()]['label'],
           ];
         }
       }
@@ -101,6 +112,22 @@ class DocumentationExport {
     catch (\Exception $exception) {
       return NULL;
     }
+  }
+
+  /**
+   * Returns an array of ConfigEntityType id that can be used by the module.
+   *
+   * @return array
+   *   The entities supported by the module.
+   */
+  public function getSupportedOptions() {
+    $result = [];
+    $this->moduleHandler->moduleExists('node') ? $result['node_type'] = t('Node') : NULL;
+    $this->moduleHandler->moduleExists('taxonomy') ? $result['taxonomy_vocabulary'] = t('Vocabulary') : NULL;
+    $this->moduleHandler->moduleExists('media') ? $result['media_type'] = t('Media') : NULL;
+    $this->moduleHandler->moduleExists('paragraphs') ? $result['paragraphs_type'] = t('Paragraph') : NULL;
+
+    return $result;
   }
 
 }

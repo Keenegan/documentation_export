@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function documentation_export_install() {
+  // Enable by default the entities if their module is activated.
+  $supported_entities = [];
+  foreach (\Drupal::service('documentation_export.service')->getSupportedOptions() as $id => $name) {
+    $supported_entities[$id] = $id;
+  }
+  \Drupal::getContainer()
+    ->get('config.factory')
+    ->getEditable('documentation_export.settings')
+    ->set('content_types', $supported_entities)
+    ->save();
+}
