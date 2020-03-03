@@ -4,7 +4,18 @@
  * Implements hook_help().
  */
 function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
-  //@TODO write help function.
+  switch ($route_name) {
+    case 'help.page.documentation_export':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provide an administration page that display a summary of the ConfigEntityType (like node types, paragraphs types, media types, etc) and their fields.') . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<p>' . t('It can be used to help create a technical documentation of the website, navigate faster between entities and fields, and help to understand which entities types are present on the site.') . '</p>';
+      $output .= '<h3>' . t('Configuration') . '</h3>';
+      $output .= '<p>' . t('<a href=":actions">The configuration page of the module</a> is used to set which entities can be displayed in the documentation page.', [
+          ':actions' => \Drupal\Core\Url::fromRoute('documentation_export.configuration')->toString()]) . '</p>';
+      return $output;
+  }
 }
 
 /**

@@ -5,7 +5,7 @@ namespace Drupal\documentation_export\Form;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\documentation_export\DocumentationExportInterface;
+use Drupal\documentation_export\DocumentationExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigurationForm extends ConfigFormBase {
@@ -20,7 +20,7 @@ class ConfigurationForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ModuleHandlerInterface $moduleHandler, DocumentationExportInterface $documentationExport) {
+  public function __construct(ModuleHandlerInterface $moduleHandler, DocumentationExport $documentationExport) {
     $this->moduleHandler = $moduleHandler;
     $this->documentationExport = $documentationExport;
   }
@@ -31,7 +31,7 @@ class ConfigurationForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('module_handler'),
-      $container->get('documentation_export_service')
+      $container->get('documentation_export.service')
     );
   }
 
@@ -46,9 +46,7 @@ class ConfigurationForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return [
-      static::SETTINGS,
-    ];
+    return [static::SETTINGS];
   }
 
   /**
@@ -60,14 +58,9 @@ class ConfigurationForm extends ConfigFormBase {
     $form['content_types'] = [
       '#type' => 'checkboxes',
       '#options' => $this->getSupportedOptions(),
-      '#title' => $this->t('Which entities should be exported.'),
+      '#title' => $this->t('Which entities to display in the <a href=":actions">documentation export page</a>.', [
+        ':actions' => \Drupal\Core\Url::fromRoute('documentation_export.entities')->toString()]),
       '#default_value' => $config->get('content_types'),
-    ];
-
-    $form['export'] = [
-      '#type' => 'submit',
-      '#value' => 'Export',
-      '#submit' => [[$this, 'exportConfiguration']],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -86,8 +79,9 @@ class ConfigurationForm extends ConfigFormBase {
 
   public function getSupportedOptions() {
     $result = [
-      'node' => $this->t('Node'),
+      'node_type' => $this->t('Node'),
       'taxonomy_vocabulary' => $this->t('Vocabulary'),
+      'media_type' => $this->t('Media'),
     ];
 
     $this->moduleHandler->moduleExists('paragraphs') ? $result['paragraphs_type'] = $this->t('Paragraph') : NULL;

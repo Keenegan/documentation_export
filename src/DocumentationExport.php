@@ -11,11 +11,8 @@ use Drupal\field\Entity\FieldConfig;
 class DocumentationExport {
 
   protected $configFactory;
-
   protected $entityTypeManager;
-
   protected $entityFieldManager;
-
   protected $fieldTypeManager;
 
   public function __construct(
@@ -31,9 +28,8 @@ class DocumentationExport {
   }
 
   public function exportDocumentation() {
-    //TODO get this entities from a config form.
     //TODO Accounts ?
-    foreach (['node_type', 'paragraphs_type', 'taxonomy_vocabulary', 'media_type'] as $entity_type_id) {
+    foreach ($this->configFactory->get('content_types') as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
       if ($storage) {
         //TODO Find a way to convert node to Node or taxonomy_term to Taxonomy term.

@@ -1,0 +1,5 @@
+documentation_export.entities:
+  title: 'Documentation export'
+  description: 'List content types entities'
+  route_name: documentation_export.entities
+  parent: system.admin_reports
