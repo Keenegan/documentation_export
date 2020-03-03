@@ -2,13 +2,13 @@
 
 namespace Drupal\documentation_export;
 
-
 use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 
 /**
- * extend Drupal's Twig_Extension class
+ * Describe the twig extensions created by this module.
+ *
+ * @package Drupal\documentation_export
  */
 class FieldLinkerTwigExtension extends \Twig_Extension {
 
@@ -24,11 +24,20 @@ class FieldLinkerTwigExtension extends \Twig_Extension {
    */
   public function getFilters() {
     return [
-      new \Twig_SimpleFilter('field_linker', [$this, 'field_linker'])
+      new \Twig_SimpleFilter('field_linker', [$this, 'fieldLinker']),
     ];
   }
 
-  public function field_linker(FieldConfig $field_config) {
+  /**
+   * Convert a FieldConfig entity into an url to the field.
+   *
+   * @param \Drupal\field\Entity\FieldConfig $field_config
+   *   The field config entity.
+   *
+   * @return \Drupal\Core\Link|mixed|string|null
+   *   The link, or just the label if there was an error.
+   */
+  public function fieldLinker(FieldConfig $field_config) {
     try {
       $url = $field_config->toUrl("{$field_config->getTargetEntityTypeId()}-field-edit-form");
       return Link::fromTextAndUrl($field_config->label(), $url);

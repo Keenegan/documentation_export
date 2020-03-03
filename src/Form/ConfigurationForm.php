@@ -2,18 +2,26 @@
 
 namespace Drupal\documentation_export\Form;
 
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\documentation_export\DocumentationExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Provide a module configuration page.
+ *
+ * @package Drupal\documentation_export\Form
+ */
 class ConfigurationForm extends ConfigFormBase {
 
-  /** @var string Config settings */
   const SETTINGS = 'documentation_export.settings';
 
+  /**
+   * The DocumentationExport service.
+   *
+   * @var \Drupal\documentation_export\DocumentationExport
+   */
   protected $documentationExport;
 
   /**
@@ -56,7 +64,8 @@ class ConfigurationForm extends ConfigFormBase {
       '#type' => 'checkboxes',
       '#options' => $this->documentationExport->getSupportedOptions(),
       '#title' => $this->t('Which entities to display in the <a href=":actions">documentation export page</a>.', [
-        ':actions' => Url::fromRoute('documentation_export.entities')->toString()]),
+        ':actions' => Url::fromRoute('documentation_export.entities')->toString(),
+      ]),
       '#default_value' => $config->get('content_types'),
     ];
 
@@ -73,6 +82,5 @@ class ConfigurationForm extends ConfigFormBase {
 
     parent::submitForm($form, $form_state);
   }
-
 
 }

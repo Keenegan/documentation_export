@@ -1,9 +1,17 @@
 <?php
 
 /**
+ * @file
+ * This module provide an interface that summarize entities types on the site.
+ */
+
+use Drupal\Core\Url;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
  * Implements hook_help().
  */
-function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+function documentation_export_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.documentation_export':
       $output = '';
@@ -12,8 +20,11 @@ function documentation_export_help($route_name, \Drupal\Core\Routing\RouteMatchI
       $output .= '<h3>' . t('Uses') . '</h3>';
       $output .= '<p>' . t('It can be used to help create a technical documentation of the website, navigate faster between entities and fields, and help to understand which entities types are present on the site.') . '</p>';
       $output .= '<h3>' . t('Configuration') . '</h3>';
-      $output .= '<p>' . t('<a href=":actions">The configuration page of the module</a> is used to set which entities can be displayed in the documentation page.', [
-          ':actions' => \Drupal\Core\Url::fromRoute('documentation_export.configuration')->toString()]) . '</p>';
+      $output .= '<p>' . t('<a href=":actions">The configuration page of the module</a> is used to set which entities can be displayed in the documentation page.',
+          [
+            ':actions' => Url::fromRoute('documentation_export.configuration')
+              ->toString(),
+          ]) . '</p>';
       return $output;
   }
 }
