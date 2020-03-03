@@ -2,7 +2,7 @@
   <h1>{{ 'Entitées' |t }} : {{ entity_type }}</h1>
   {% for entity in entities_type %}
     <caption>
-      <h2>{{ entity.entity.label }}</h2>
+      <h3>{{ entity.entity|entity_linker }}</h3>
       {{ 'Machine name' |t }} : {{ entity.entity.id }}<br>
       {{ 'Description' |t }} : {{ entity.entity.description }}
     </caption>
@@ -45,5 +45,6 @@
       {% endfor %}
     </table>
   {% endfor %}
+  <br><br>
 {% endfor %}
 

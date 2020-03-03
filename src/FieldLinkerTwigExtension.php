@@ -25,6 +25,7 @@ class FieldLinkerTwigExtension extends \Twig_Extension {
   public function getFilters() {
     return [
       new \Twig_SimpleFilter('field_linker', [$this, 'fieldLinker']),
+      new \Twig_SimpleFilter('entity_linker', [$this, 'entityLinker']),
     ];
   }
 
@@ -45,7 +46,16 @@ class FieldLinkerTwigExtension extends \Twig_Extension {
     catch (\Exception $exception) {
       return $field_config->label();
     }
+  }
 
+  public function entityLinker($entity) {
+    try {
+      $url = $entity->toUrl();
+      return Link::fromTextAndUrl($entity->label(), $url);
+    }
+    catch (\Exception $exception) {
+      return $entity->label();
+    }
   }
 
 }

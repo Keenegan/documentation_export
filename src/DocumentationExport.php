@@ -83,10 +83,9 @@ class DocumentationExport {
     $data = [];
     foreach ($this->configFactory->get('content_types') as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
-      if ($storage) {
-        // TODO Find a way to convert taxonomy_term to Taxonomy term.
-        $data[$storage->getEntityType()
-          ->getBundleOf()] = $this->getDocumentationData($storage);
+      if ($storage && $child_storage = $this->getStorage($storage->getEntityType()->getBundleOf())) {
+        $bundle = $child_storage->getEntityType()->getBundleLabel();
+        $data[$bundle] = $this->getDocumentationData($storage);
       }
     }
     return $data;
