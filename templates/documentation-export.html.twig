@@ -5,7 +5,7 @@
       <h3>{{ entity.entity|entity_linker }}</h3>
       {{ 'Machine name' |t }} : {{ entity.entity.id }}<br>
       {% if entity.entity.description %}
-        {{ 'Description' |t }} : {{ entity.entity.description }}
+        {{ 'Description' |t }} : {{ entity.entity.description |raw }}
       {% endif %}
     </caption>
     {% if entity.fields %}
@@ -27,7 +27,7 @@
             <td>{{ field.field_config |field_linker }}</td>
             <td>{{ field.field_config.getName }}</td>
             <td>{{ field.field_type }}</td>
-            <td>{{ field.field_config.description }}</td>
+            <td>{{ field.field_config.description |raw }}</td>
             <td>
               {% if field.field_config.getFieldStorageDefinition.getCardinality == -1 %}
                 {{ 'No limit' | t }}
