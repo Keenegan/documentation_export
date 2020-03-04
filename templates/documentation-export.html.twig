@@ -40,7 +40,8 @@
               {% elseif field_type == 'number' %} {% include '@documentation_export/fields/number-field.html.twig' %}
               {% elseif field_type == 'text' %} {% include '@documentation_export/fields/text-field.html.twig' %}
               {% elseif field_type == 'image' %} {% include '@documentation_export/fields/image-field.html.twig' %}
-              {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}{% endif %}
+              {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}
+              {% elseif field_type == 'boolean' %} {% include '@documentation_export/fields/boolean-field.html.twig' %}{% endif %}
             </td>
           <tr>
             {% endfor %}
@@ -50,7 +51,8 @@
     {% else %}
       {{ 'No field for this entity' | t }}
     {% endif %}
+    <br>
   {% endfor %}
-  <br><br>
+  <br>
 {% endfor %}
 
