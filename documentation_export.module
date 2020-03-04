@@ -37,6 +37,7 @@ function documentation_export_theme($existing, $type, $theme, $path) {
     'documentation_export' => [
       'variables' => [
         'data' => NULL,
+        'users' => NULL,
       ],
     ],
   ];

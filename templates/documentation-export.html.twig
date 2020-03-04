@@ -1,3 +1,4 @@
+{{ dump() }}
 {% for entity_type,entities_type in data %}
   <h1>{{ 'Entities' |t }} : {{ entity_type }}</h1>
   {% for entity in entities_type %}
@@ -48,3 +49,4 @@
   <br><br>
 {% endfor %}
 
+{{ users }}

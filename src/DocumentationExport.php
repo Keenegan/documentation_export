@@ -91,6 +91,10 @@ class DocumentationExport {
     return $data;
   }
 
+  public function users(){
+    return $this->entityTypeManager->getListBuilder('field_config')->render('user', 'user');
+  }
+
   /**
    * Creates the documentation data array of an entity.
    *

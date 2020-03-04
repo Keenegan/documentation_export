@@ -47,6 +47,7 @@ class DocumentationExportController extends ControllerBase {
       'dblog_table' => [
         '#theme' => 'documentation_export',
         '#data' => $this->documentationExport->exportDocumentation(),
+        '#users' => $this->documentationExport->users(),
       ],
     ];
   }
