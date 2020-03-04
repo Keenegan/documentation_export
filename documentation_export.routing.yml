@@ -13,3 +13,11 @@ documentation_export.entities:
     _title: 'Documentation'
   requirements:
     _permission: 'access documentation page'
+
+documentation_export.pdf:
+  path: '/documentation_export/pdf'
+  defaults:
+    _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::printPdf'
+    _title: 'Documentation'
+  requirements:
+    _permission: 'access documentation page'

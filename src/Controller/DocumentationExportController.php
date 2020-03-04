@@ -5,6 +5,7 @@ namespace Drupal\documentation_export\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\documentation_export\DocumentationExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Dompdf\Dompdf;
 
 /**
  * Class DocumentationExportController.
@@ -49,6 +50,17 @@ class DocumentationExportController extends ControllerBase {
         '#data' => $this->documentationExport->exportDocumentation(),
       ],
     ];
+  }
+
+  public function printPdf() {
+    $renderable = $this->exportEntities();
+    $rendered = \Drupal::service('renderer')->render($renderable);
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($rendered);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+    $dompdf->stream();
+    return ['#markup' => ''];
   }
 
 }
