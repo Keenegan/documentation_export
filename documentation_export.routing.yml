@@ -12,5 +12,4 @@ documentation_export.entities:
     _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::exportEntities'
     _title: 'Documentation'
   requirements:
-    #TODO : create permission
-    _access: 'TRUE'
+    _permission: 'access documentation page'
