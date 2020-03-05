@@ -52,7 +52,7 @@ class FieldLinkerTwigExtension extends \Twig_Extension {
   /**
    * Get the link to an entity.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to link.
    *
    * @return \Drupal\Core\Link|string|null

@@ -15,12 +15,18 @@ h3 {
   font-size: 1.231em;
   font-weight: bold;
 }
-a, a:hover, .link:hover, a:focus, .link:focus {
+
+a,
+a:hover,
+.link:hover,
+a:focus,
+.link:focus {
   text-decoration: none;
   color: #0074bd;
   background-color: transparent;
 }
-a:active, a:hover {
+a:active,
+a:hover {
   outline: 0;
 }
 

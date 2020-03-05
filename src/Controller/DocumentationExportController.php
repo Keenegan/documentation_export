@@ -3,6 +3,7 @@
 namespace Drupal\documentation_export\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\documentation_export\DocumentationExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Dompdf\Dompdf;
@@ -22,10 +23,18 @@ class DocumentationExportController extends ControllerBase {
   protected $documentationExport;
 
   /**
+   * The Drupal renderer class.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $rendrer;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(DocumentationExport $documentationExport) {
+  public function __construct(DocumentationExport $documentationExport, RendererInterface $renderer) {
     $this->documentationExport = $documentationExport;
+    $this->rendrer = $renderer;
   }
 
   /**
@@ -33,7 +42,8 @@ class DocumentationExportController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('documentation_export.service')
+      $container->get('documentation_export.service'),
+      $container->get('renderer')
     );
   }
 
@@ -52,20 +62,30 @@ class DocumentationExportController extends ControllerBase {
     ];
   }
 
+  /**
+   * Render the documentation page in a PDF file.
+   *
+   * @return array
+   *   The render array for the controller.
+   */
   public function printPdf() {
-    $renderable = [
+    $documentation_page = [
       'pdf_export_page' => [
         '#theme' => 'pdf_export_page',
         '#data' => $this->documentationExport->exportDocumentation(),
         '#stylesheet' => drupal_get_path('module', 'documentation_export') . '/styles.css',
       ],
     ];
-    $rendered = \Drupal::service('renderer')->render($renderable);
-    $dompdf = new Dompdf();
-    $dompdf->loadHtml($rendered);
-    $dompdf->setPaper('A4', 'landscape');
-    $dompdf->render();
-    $dompdf->stream();
+    try {
+      $dompdf = new Dompdf();
+      $dompdf->loadHtml($this->rendrer->render($documentation_page));
+      $dompdf->setPaper('A4', 'landscape');
+      $dompdf->render();
+      $dompdf->stream();
+    }
+    catch (\Exception $exception) {
+      return [$exception->getMessage()];
+    }
     return [];
   }
 
