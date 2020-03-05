@@ -23,7 +23,7 @@
         {% for field_type,fields in entity.fields %}
           <tbody>
           {% for field in fields %}
-          <tr">
+          <tr>
             <td>{{ field.field_config |field_linker }}</td>
             <td>{{ field.field_config.getName }}</td>
             <td>{{ field.field_type }}</td>
