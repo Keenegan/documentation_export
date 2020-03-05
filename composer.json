@@ -20,10 +20,10 @@
         "dompdf/dompdf": "^0.8.5"
     },
     "repositories": {
-        "drupal/documentation_export": {
+        "drupal-keenegan/documentation_export": {
             "type": "package",
             "package": {
-                "name": "drupal/documentation_export",
+                "name": "drupal-keenegan/documentation_export",
                 "version": "0.0.1",
                 "type": "drupal-module",
                 "source": {
