@@ -1,5 +1,5 @@
 name: Documentation export
-description: Export the documentation of the site's content types, paragraphs, and other.
+description: Export the fields documentation of the entity types (like content types, media types, paragraphs types).
 package: Custom
 
 type: module
