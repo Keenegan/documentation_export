@@ -18,5 +18,20 @@
     },
     "require": {
         "dompdf/dompdf": "^0.8.5"
+    },
+    "repositories": {
+        "drupal/documentation_export": {
+            "type": "package",
+            "package": {
+                "name": "drupal/documentation_export",
+                "version": "0.0.1",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://git.drupalcode.org/sandbox/Albin_Guignabert-3113362",
+                    "type": "git",
+                    "reference": "8.x-1.x"
+                }
+            }
+        }
     }
 }
