@@ -1,0 +1,22 @@
+{
+    "name": "drupal/documentation_export",
+    "description": "Export the fields documentation of the entity types (like content types, media types, paragraphs types).",
+    "type": "drupal-module",
+    "keywords": ["Drupal", "Documentation", "PDF"],
+    "homepage": "http://drupal.org/project/documentation_export",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Albin Guignabert (Keenegan)",
+            "homepage": "https://www.drupal.org/u/keenegan",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/documentation_export",
+        "source": "http://cgit.drupalcode.org/documentation_export"
+    },
+    "require": {
+        "dompdf/dompdf": "^0.8.5"
+    }
+}
