@@ -2,6 +2,8 @@
 
 namespace Drupal\documentation_export\Controller;
 
+use Drupal\Core\Config\Config;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\documentation_export\DocumentationExport;
@@ -30,11 +32,23 @@ class DocumentationExportController extends ControllerBase {
   protected $rendrer;
 
   /**
+   * The Drupal configuration service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
    * {@inheritdoc}
    */
-  public function __construct(DocumentationExport $documentationExport, RendererInterface $renderer) {
+  public function __construct(
+    DocumentationExport $documentationExport,
+    RendererInterface $renderer,
+    ConfigFactoryInterface $config
+  ) {
     $this->documentationExport = $documentationExport;
     $this->rendrer = $renderer;
+    $this->config = $config;
   }
 
   /**
@@ -43,7 +57,8 @@ class DocumentationExportController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('documentation_export.service'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('config.factory')
     );
   }
 
@@ -81,7 +96,7 @@ class DocumentationExportController extends ControllerBase {
       $dompdf->loadHtml($this->rendrer->render($documentation_page));
       $dompdf->setPaper('A4', 'landscape');
       $dompdf->render();
-      $dompdf->stream();
+      $dompdf->stream($this->config->get('system.site')->get('name') . ' entity documentation');
     }
     catch (\Exception $exception) {
       return [$exception->getMessage()];
