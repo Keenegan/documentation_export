@@ -45,7 +45,7 @@ class DocumentationExportController extends ControllerBase {
    */
   public function exportEntities() {
     return [
-      'dblog_table' => [
+      'documentation_export' => [
         '#theme' => 'documentation_export',
         '#data' => $this->documentationExport->exportDocumentation(),
       ],
@@ -53,14 +53,20 @@ class DocumentationExportController extends ControllerBase {
   }
 
   public function printPdf() {
-    $renderable = $this->exportEntities();
+    $renderable = [
+      'documentation_export_pdf' => [
+        '#theme' => 'documentation_export_pdf',
+        '#data' => $this->documentationExport->exportDocumentation(),
+        '#stylesheet' => drupal_get_path('module', 'documentation_export') . '/styles.css',
+      ],
+    ];
     $rendered = \Drupal::service('renderer')->render($renderable);
     $dompdf = new Dompdf();
     $dompdf->loadHtml($rendered);
-    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->setPaper('A4', 'landscape');
     $dompdf->render();
     $dompdf->stream();
-    return ['#markup' => ''];
+    return [];
   }
 
 }

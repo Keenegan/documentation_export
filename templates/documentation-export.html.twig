@@ -1,13 +1,13 @@
 {% for entity_type,entities_type in data %}
   <h1>{{ 'Entities' |t }} : {{ entity_type }}</h1>
   {% for entity in entities_type %}
-    <caption>
+    <div>
       <h3>{{ entity.entity|entity_linker }}</h3>
       {{ 'Machine name' |t }} : {{ entity.entity.id }}<br>
       {% if entity.entity.description %}
         {{ 'Description' |t }} : {{ entity.entity.description |raw }}
       {% endif %}
-    </caption>
+    </div>
     {% if entity.fields %}
       <table>
         <thead>
@@ -23,7 +23,7 @@
         {% for field_type,fields in entity.fields %}
           <tbody>
           {% for field in fields %}
-          <tr>
+          <tr">
             <td>{{ field.field_config |field_linker }}</td>
             <td>{{ field.field_config.getName }}</td>
             <td>{{ field.field_type }}</td>
@@ -43,13 +43,11 @@
               {% elseif field_type == 'entity_reference' %} {% include '@documentation_export/fields/entity-reference-field.html.twig' %}
               {% elseif field_type == 'boolean' %} {% include '@documentation_export/fields/boolean-field.html.twig' %}{% endif %}
             </td>
-          <tr>
+          </tr>
             {% endfor %}
           </tbody>
         {% endfor %}
       </table>
-    {% else %}
-      {{ 'No field for this entity' | t }}
     {% endif %}
     <br>
   {% endfor %}

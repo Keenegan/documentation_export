@@ -39,5 +39,11 @@ function documentation_export_theme($existing, $type, $theme, $path) {
         'data' => NULL,
       ],
     ],
+    'documentation_export_pdf' => [
+      'variables' => [
+        'data' => NULL,
+        'stylesheet' => NULL,
+      ],
+    ],
   ];
 }
