@@ -45,8 +45,8 @@ class DocumentationExportController extends ControllerBase {
    */
   public function exportEntities() {
     return [
-      'documentation_export' => [
-        '#theme' => 'documentation_export',
+      'documentation_page' => [
+        '#theme' => 'documentation_page',
         '#data' => $this->documentationExport->exportDocumentation(),
       ],
     ];
@@ -54,8 +54,8 @@ class DocumentationExportController extends ControllerBase {
 
   public function printPdf() {
     $renderable = [
-      'documentation_export_pdf' => [
-        '#theme' => 'documentation_export_pdf',
+      'pdf_export_page' => [
+        '#theme' => 'pdf_export_page',
         '#data' => $this->documentationExport->exportDocumentation(),
         '#stylesheet' => drupal_get_path('module', 'documentation_export') . '/styles.css',
       ],
