@@ -93,6 +93,10 @@ class DocumentationExport {
 
   public function exportAccountFields(){
     $account = $this->entityTypeManager->getListBuilder('field_config')->render('user', 'user');
+    unset($account['table']['#header']['operations']);
+    foreach($account['table']['#rows'] as $row_name => $row) {
+      unset($account['table']['#rows'][$row_name]['data']['operations']);
+    }
     return $account;
   }
 
