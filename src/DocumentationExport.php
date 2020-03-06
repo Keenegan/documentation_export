@@ -91,8 +91,9 @@ class DocumentationExport {
     return $data;
   }
 
-  public function users(){
-    return $this->entityTypeManager->getListBuilder('field_config')->render('user', 'user');
+  public function exportAccountFields(){
+    $account = $this->entityTypeManager->getListBuilder('field_config')->render('user', 'user');
+    return $account;
   }
 
   /**
