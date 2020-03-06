@@ -73,7 +73,6 @@ class DocumentationExportController extends ControllerBase {
       'documentation_page' => [
         '#theme' => 'documentation_page',
         '#data' => $this->documentationExport->exportDocumentation(),
-        '#users' => $this->documentationExport->exportAccountFields(),
       ],
     ];
   }

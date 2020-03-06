@@ -79,56 +79,25 @@ class DocumentationExport {
    *   The entities exported.
    */
   public function exportDocumentation() {
-    // TODO Export accounts fields.
+    $definition = $this->entityTypeManager->getDefinition('field_config');
+    $list_builder = $this->entityTypeManager->createHandlerInstance('Drupal\documentation_export\DocumentationListBuilder', $definition);
+
     $data = [];
-    foreach ($this->configFactory->get('content_types') as $entity_type_id) {
+    foreach (['node_type','taxonomy_vocabulary','media_type','paragraphs_type', 'user'] as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
+      // Bundlables entities.
       if ($storage && $child_storage = $this->getStorage($storage->getEntityType()->getBundleOf())) {
-        $bundle = $child_storage->getEntityType()->getBundleLabel();
-        $data[$bundle] = $this->getDocumentationData($storage);
-      }
-    }
-    return $data;
-  }
-
-  public function exportAccountFields(){
-    $account = $this->entityTypeManager->getListBuilder('field_config')->render('user', 'user');
-    unset($account['table']['#header']['operations']);
-    foreach($account['table']['#rows'] as $row_name => $row) {
-      unset($account['table']['#rows'][$row_name]['data']['operations']);
-    }
-    return $account;
-  }
-
-  /**
-   * Creates the documentation data array of an entity.
-   *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
-   *   The storage object.
-   *
-   * @return array
-   *   The entities data.
-   */
-  public function getDocumentationData(EntityStorageInterface $storage) {
-    $data = [];
-    foreach ($storage->loadMultiple() as $entity) {
-      $data[$entity->label()]['entity'] = $entity;
-      $fields = $this->entityFieldManager->getFieldDefinitions($storage->getEntityType()
-        ->getBundleOf(), $entity->id());
-      foreach ($fields as $field_definition) {
-        /** @var \Drupal\field\Entity\FieldConfig $field_definition */
-        if ($field_definition instanceof FieldConfig && !empty($field_definition->getTargetBundle())) {
-          $field_type = $this->getFieldType($field_definition);
-
-          // TODO use FieldConfigListBuilder to create the list ?
-          $data[$entity->label()]['fields'][$field_type][$field_definition->getName()] = [
-            'field_config' => $field_definition,
-            'field_type' => $this->fieldTypeManager->getDefinitions()[$field_definition->getType()]['label'],
-          ];
+        foreach ($storage->loadMultiple() as $entity) {
+          $data[] = $list_builder->render($storage->getEntityType()->getBundleOf(), $entity->id());
         }
       }
+      // No bundlables entities (user).
+      else {
+        $data[] = $list_builder->render('user', 'user');
+      }
     }
     return $data;
+
   }
 
   /**
