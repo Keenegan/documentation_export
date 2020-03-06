@@ -1,0 +1,7 @@
+{% if field.field_config.getSettings.on_label %}
+  {{ '"On" label' | t}} : {{ field.field_config.getSettings.on_label }}<br>
+{% endif %}
+
+{% if field.field_config.getSettings.off_label %}
+  {{ '"Off" label' | t }} : {{ field.field_config.getSettings.off_label }}<br>
+{% endif %}

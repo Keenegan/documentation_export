@@ -1,11 +1,11 @@
 {% if field.field_config.getSettings.file_directory %}
-  Répertoire d'installation: {{ field.field_config.getSettings.file_directory }}<br>
+  {{ 'File directory'|t }} : {{ field.field_config.getSettings.file_directory }}<br>
 {% endif %}
 
 {% if field.field_config.getSettings.file_extensions %}
-  Extensions autorisées: {{ field.field_config.getSettings.file_extensions }}<br>
+  {{ 'Allowed file extensions'|t }} : {{ field.field_config.getSettings.file_extensions }}<br>
 {% endif %}
 
 {% if field.field_config.getSettings.max_filesize %}
-  Taille maximum: {{ field.field_config.getSettings.max_filesize }}<br>
+  {{ 'Maximum upload size'|t }} : {{ field.field_config.getSettings.max_filesize }}<br>
 {% endif %}

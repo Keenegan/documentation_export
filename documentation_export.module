@@ -34,10 +34,16 @@ function documentation_export_help($route_name, RouteMatchInterface $route_match
  */
 function documentation_export_theme($existing, $type, $theme, $path) {
   return [
-    'documentation_export' => [
+    'documentation_page' => [
       'variables' => [
         'data' => NULL,
         'users' => NULL,
+      ],
+    ],
+    'pdf_export_page' => [
+      'variables' => [
+        'data' => NULL,
+        'stylesheet' => NULL,
       ],
     ],
   ];

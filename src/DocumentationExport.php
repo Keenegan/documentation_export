@@ -154,6 +154,11 @@ class DocumentationExport {
         $field_type = 'text';
         break;
 
+      case 'entity_reference':
+      case 'entity_reference_revisions':
+        $field_type = 'entity_reference';
+        break;
+
     }
     return $field_type;
   }

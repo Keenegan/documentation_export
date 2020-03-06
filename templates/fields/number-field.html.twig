@@ -1,16 +1,16 @@
 {% if field.field_config.getSettings.min %}
-  Min: {{ field.field_config.getSettings.min }}<br>
+  {{ 'Minimum'|t }} : {{ field.field_config.getSettings.min }}<br>
 {% endif %}
 
 {% if field.field_config.getSettings.max %}
-  Max: {{ field.field_config.getSettings.max }}<br>
+  {{ 'Maximum'|t }} : {{ field.field_config.getSettings.max }}<br>
 {% endif %}
 
 {% if field.field_config.getSettings.prefix %}
-  Préfixe: {{ field.field_config.getSettings.prefix }}<br>
+  {{ 'Prefix'|t }} : {{ field.field_config.getSettings.prefix }}<br>
 {% endif %}
 
 {% if field.field_config.getSettings.suffix %}
-  Suffixe: {{ field.field_config.getSettings.suffix }}<br>
+  {{ 'Suffix'|t }} : {{ field.field_config.getSettings.suffix }}<br>
 {% endif %}
 

@@ -1,0 +1,56 @@
+body {
+  font: normal 81.3%/1.538em "Open Sans", sans-serif;
+  color: #333;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.625em;
+  font-weight: bold;
+  line-height: 1.875em;
+}
+
+h3 {
+  margin: 10px 0;
+  font-size: 1.231em;
+  font-weight: bold;
+}
+
+a,
+a:hover,
+.link:hover,
+a:focus,
+.link:focus {
+  text-decoration: none;
+  color: #0074bd;
+  background-color: transparent;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+
+table {
+  width: 100%;
+  margin: 0 0 10px;
+  border-collapse: collapse;
+}
+
+tr {
+  padding: 0.1em 0.6em;
+  border-bottom: 1px solid #e6e4df;
+}
+
+th {
+  font-size: 0.91rem;
+  font-weight: 500;
+  text-transform: none;
+  background: #f5f5f2;
+  color: #909090;
+}
+
+td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
+}

@@ -1,5 +1,5 @@
 {% for target in field.field_config.getSettings.handler_settings.target_bundles %}
-  {{ loop.first ? 'Entitées autorisées:' }}
+  {{ loop.first ? 'Referenced entities'|t ~' : ' }}
   {{ target | capitalize }}
   {{ not loop.last ? '-' }}
 {% endfor %}
