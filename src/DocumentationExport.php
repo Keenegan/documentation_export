@@ -7,9 +7,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * DocumentationExport service.
@@ -77,6 +75,8 @@ class DocumentationExport {
    *
    * @return array
    *   The entities exported.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function exportDocumentation() {
     $definition = $this->entityTypeManager->getDefinition('field_config');
@@ -86,7 +86,7 @@ class DocumentationExport {
     foreach ($this->configFactory->get('content_types') as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
       // Bundlables entities.
-      if ($storage && $child_storage = $this->getStorage($storage->getEntityType()->getBundleOf())) {
+      if ($storage && $this->getStorage($storage->getEntityType()->getBundleOf())) {
         foreach ($storage->loadMultiple() as $entity) {
           $data[$entity->getEntityType()->getLabel()->render()][] = $list_builder->render($storage->getEntityType()->getBundleOf(), $entity);
         }

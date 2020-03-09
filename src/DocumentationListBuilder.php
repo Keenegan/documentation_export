@@ -85,7 +85,6 @@ class DocumentationListBuilder extends EntityListBuilder {
     $this->entityTypeManager = $entity_type_manager;
     $this->fieldTypeManager = $field_type_manager;
     if (!$entity_field_manager) {
-      @trigger_error('Calling FieldConfigListBuilder::__construct() with the $entity_field_manager argument is supported in Drupal 8.7.0 and will be required before Drupal 9.0.0. See https://www.drupal.org/node/2549139.', E_USER_DEPRECATED);
       $entity_field_manager = \Drupal::service('entity_field.manager');
     }
     $this->entityFieldManager = $entity_field_manager;
@@ -111,7 +110,7 @@ class DocumentationListBuilder extends EntityListBuilder {
     $this->targetBundle = $target_bundle->id();
 
     $build = parent::render();
-    $build['table']['#prefix'] = $this->createLink($target_bundle);
+    $build['table']['#prefix'] = $this->createTablePrefix($target_bundle);
     $build['table']['#suffix'] = '<br>';
     $build['table']['#attributes']['id'] = 'field-overview';
     $build['table']['#empty'] = $this->t('No fields are present yet.');
@@ -119,9 +118,17 @@ class DocumentationListBuilder extends EntityListBuilder {
     return $build;
   }
 
-  public function createLink($target_bundle) {
+  /**
+   * Creates the table prefix with entities data.
+   *
+   * @param $target_bundle
+   *   The target bundle.
+   *
+   * @return string
+   *   The table prefix.
+   */
+  public function createTablePrefix($target_bundle) {
     $description = '';
-    // TODO replace user by a var.
     if ($this->targetBundle === 'user') {
       $link = Link::fromTextAndUrl(
         $target_bundle->getLabel(), Url::fromRoute('entity.user.field_ui_fields')
@@ -135,7 +142,7 @@ class DocumentationListBuilder extends EntityListBuilder {
         $description = $this->t('Description') . " : $description <br>";
       }
     }
-    return "<h3>$link</h3>$description" .$this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
+    return "<h3>$link</h3>$description" . $this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
   }
 
   /**
@@ -175,11 +182,10 @@ class DocumentationListBuilder extends EntityListBuilder {
   public function buildRow(EntityInterface $field_config) {
     /** @var \Drupal\field\FieldConfigInterface $field_config */
     $field_storage = $field_config->getFieldStorageDefinition();
-    $route_parameters = [
-        'field_config' => $field_config->id(),
-      ] + FieldUI::getRouteBundleParameter($this->entityTypeManager->getDefinition($this->targetEntityTypeId), $this->targetBundle);
+    $route_parameters = ['field_config' => $field_config->id()]
+      + FieldUI::getRouteBundleParameter($this->entityTypeManager->getDefinition($this->targetEntityTypeId), $this->targetBundle);
 
-    $row = [
+    return [
       'id' => Html::getClass($field_config->getName()),
       'data' => [
         'label' => [
@@ -204,18 +210,17 @@ class DocumentationListBuilder extends EntityListBuilder {
         'field_info' => $this->buildFieldInfo($field_config),
       ],
     ];
-
-    // Add the operations.
-    $row['data'] = $row['data'] + parent::buildRow($field_config);
-
-    if ($field_storage->isLocked()) {
-      //$row['data']['operations'] = ['data' => ['#markup' => $this->t('Locked')]];
-      $row['class'][] = 'menu-disabled';
-    }
-
-    return $row;
   }
 
+  /**
+   * Build the cardinality field.
+   *
+   * @param \Drupal\field\Entity\FieldConfig $field_config
+   *   The field config.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|int
+   *   The cardinality value.
+   */
   public function buildCardinality(FieldConfig $field_config) {
     if ($field_config->getFieldStorageDefinition()->getCardinality() === -1) {
       return $this->t('No limit');
@@ -223,6 +228,15 @@ class DocumentationListBuilder extends EntityListBuilder {
     return $field_config->getFieldStorageDefinition()->getCardinality();
   }
 
+  /**
+   * Build the information field.
+   *
+   * @param \Drupal\field\Entity\FieldConfig $field_config
+   *   The field config.
+   *
+   * @return \Drupal\Component\Render\FormattableMarkup
+   *   The formatted field data.
+   */
   public function buildFieldInfo(FieldConfig $field_config) {
     $return = '';
     foreach ($field_config->getSettings() as $label => $value) {
@@ -234,6 +248,4 @@ class DocumentationListBuilder extends EntityListBuilder {
     return new FormattableMarkup($return, []);
   }
 
-
 }
-
