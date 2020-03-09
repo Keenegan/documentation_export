@@ -7,8 +7,3 @@ services:
       - '@entity_field.manager'
       - '@plugin.manager.field.field_type'
       - '@module_handler'
-
-  documentation_export.field_linker:
-    class: Drupal\documentation_export\FieldLinkerTwigExtension
-    tags:
-      - { name: twig.extension }
