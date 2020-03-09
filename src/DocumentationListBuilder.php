@@ -2,8 +2,8 @@
 
 namespace Drupal\documentation_export;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -199,7 +199,7 @@ class DocumentationListBuilder extends EntityListBuilder {
             '#options' => ['attributes' => ['title' => $this->t('Edit field settings.')]],
           ],
         ],
-        'field_description' => $field_config->getDescription(),
+        'field_description' => new FormattableMarkup($field_config->getDescription(), []),
         'field_cardinality' => $field_config->getFieldStorageDefinition()
           ->getCardinality(),
         'field_info' => $this->getInfo($field_config),
@@ -225,7 +225,7 @@ class DocumentationListBuilder extends EntityListBuilder {
         $return .= $this->t($label) . " : $value<br>";
       }
     }
-    return $return;
+    return new FormattableMarkup($return, []);
   }
 
 
