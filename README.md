@@ -18,12 +18,12 @@ Add this to your composer.json file in the repository section :
 "type": "package",
 "package": {
     "name": "drupal-keenegan/documentation_export",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "type": "drupal-module",
     "source": {
         "url": "https://git.drupalcode.org/sandbox/Albin_Guignabert-3113362",
         "type": "git",
-        "reference": "0.0.1"
+        "reference": "^1.0.0"
     }
 }
 ```
