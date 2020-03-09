@@ -96,44 +96,8 @@ class DocumentationExport {
         $data[] = $list_builder->render($entity_type_id, $storage->getEntityType());
       }
     }
+
     return $data;
-
-  }
-
-  /**
-   * Returns the field type category of a field definition.
-   *
-   * @param \Drupal\field\Entity\FieldConfig $field_definition
-   *   The field definition object.
-   *
-   * @return string
-   *   The field type.
-   */
-  private function getFieldType(FieldConfig $field_definition) {
-    // TODO use CategorizingPluginManagerTrait instead of this ?
-    $field_type = $field_definition->get('field_type');
-    switch ($field_type) {
-      case 'integer':
-      case 'float':
-      case 'decimal':
-        $field_type = 'number';
-        break;
-
-      case 'text_with_summary':
-      case 'string':
-      case 'string_long':
-      case 'text':
-      case 'text_long':
-        $field_type = 'text';
-        break;
-
-      case 'entity_reference':
-      case 'entity_reference_revisions':
-        $field_type = 'entity_reference';
-        break;
-
-    }
-    return $field_type;
   }
 
   /**

@@ -220,8 +220,9 @@ class DocumentationListBuilder extends EntityListBuilder {
   public function getInfo(FieldConfig $field_config) {
     $return = '';
     foreach ($field_config->getSettings() as $label => $value) {
-      if (is_string($value)) {
-        $return .= "$label : $value";
+      if ($value && is_string($value)) {
+        $label = ucfirst(str_replace('_', ' ', $label));
+        $return .= $this->t($label) . " : $value<br>";
       }
     }
     return $return;
