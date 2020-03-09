@@ -89,7 +89,6 @@ class DocumentationExportController extends ControllerBase {
         '#theme' => 'pdf_export_page',
         '#data' => $this->documentationExport->exportDocumentation(),
         '#stylesheet' => drupal_get_path('module', 'documentation_export') . '/styles.css',
-        '#users' => $this->documentationExport->exportAccountFields(),
       ],
     ];
     try {
