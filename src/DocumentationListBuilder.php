@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\field\FieldConfigInterface;
 use Drupal\field_ui\FieldUI;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -111,6 +112,7 @@ class DocumentationListBuilder extends EntityListBuilder {
 
     $build = parent::render();
     $build['table']['#prefix'] = $this->createLink($target_bundle);
+    $build['table']['#suffix'] = '<br>';
     $build['table']['#attributes']['id'] = 'field-overview';
     $build['table']['#empty'] = $this->t('No fields are present yet.');
 
@@ -118,14 +120,22 @@ class DocumentationListBuilder extends EntityListBuilder {
   }
 
   public function createLink($target_bundle) {
+    $prefix = '';
     if ($this->targetBundle === 'user') {
       // TODO Create link to user fields page.
-      $link = $target_bundle->get('label');
+      $prefix .= $target_bundle->get('label');
     }
     else {
-      $link = Link::fromTextAndUrl($target_bundle->label(), $target_bundle->toUrl())->toString();;
+      $link = Link::fromTextAndUrl($target_bundle->label(), $target_bundle->toUrl())
+        ->toString();
+      $prefix .= "<h3>$link</h3>";
+      $prefix .= $this->t('Machine name') . ' : ' .$target_bundle->id() . '<br>';
+      if ($description = $target_bundle->getDescription()) {
+        $prefix .= $this->t('Description') . " : $description";
+      }
     }
-    return $link;
+
+    return $prefix;
   }
 
   /**
@@ -207,10 +217,12 @@ class DocumentationListBuilder extends EntityListBuilder {
     return $row;
   }
 
-  public function getInfo($field_config) {
+  public function getInfo(FieldConfig $field_config) {
     $return = '';
     foreach ($field_config->getSettings() as $label => $value) {
-      $return .= "$label : $value" . "<br>";
+      if (is_string($value)) {
+        $return .= "$label : $value";
+      }
     }
     return $return;
   }
