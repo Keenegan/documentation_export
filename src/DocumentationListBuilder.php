@@ -129,7 +129,7 @@ class DocumentationListBuilder extends EntityListBuilder {
       $link = Link::fromTextAndUrl($target_bundle->label(), $target_bundle->toUrl())
         ->toString();
       $prefix .= "<h3>$link</h3>";
-      $prefix .= $this->t('Machine name') . ' : ' .$target_bundle->id() . '<br>';
+      $prefix .= $this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
       if ($description = $target_bundle->getDescription()) {
         $prefix .= $this->t('Description') . " : $description";
       }
@@ -200,9 +200,8 @@ class DocumentationListBuilder extends EntityListBuilder {
           ],
         ],
         'field_description' => new FormattableMarkup($field_config->getDescription(), []),
-        'field_cardinality' => $field_config->getFieldStorageDefinition()
-          ->getCardinality(),
-        'field_info' => $this->getInfo($field_config),
+        'field_cardinality' => $this->buildCardinality($field_config),
+        'field_info' => $this->buildFieldInfo($field_config),
       ],
     ];
 
@@ -217,7 +216,14 @@ class DocumentationListBuilder extends EntityListBuilder {
     return $row;
   }
 
-  public function getInfo(FieldConfig $field_config) {
+  public function buildCardinality(FieldConfig $field_config) {
+    if ($field_config->getFieldStorageDefinition()->getCardinality() === -1) {
+      return $this->t('No limit');
+    }
+    return $field_config->getFieldStorageDefinition()->getCardinality();
+  }
+
+  public function buildFieldInfo(FieldConfig $field_config) {
     $return = '';
     foreach ($field_config->getSettings() as $label => $value) {
       if ($value && is_string($value)) {
