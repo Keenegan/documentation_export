@@ -1,9 +1,0 @@
-{% include '@documentation_export/fields/file-field.html.twig' %}
-
-{% if field.field_config.getSettings.max_resolution %}
-  {{ 'Maximum image resolution'|t }} : {{ field.field_config.getSettings.max_resolution }}<br>
-{% endif %}
-
-{% if field.field_config.getSettings.min_resolution %}
-  {{ 'Minimum image resolution'|t }} : {{ field.field_config.getSettings.min_resolution }}<br>
-{% endif %}

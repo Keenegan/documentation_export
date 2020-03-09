@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\field\FieldConfigInterface;
 use Drupal\field_ui\FieldUI;
@@ -106,14 +107,25 @@ class DocumentationListBuilder extends EntityListBuilder {
    */
   public function render($target_entity_type_id = NULL, $target_bundle = NULL) {
     $this->targetEntityTypeId = $target_entity_type_id;
-    $this->targetBundle = $target_bundle;
+    $this->targetBundle = $target_bundle->id();
 
     $build = parent::render();
-    $build['table']['#prefix'] = "$target_entity_type_id - $target_bundle";
+    $build['table']['#prefix'] = $this->createLink($target_bundle);
     $build['table']['#attributes']['id'] = 'field-overview';
     $build['table']['#empty'] = $this->t('No fields are present yet.');
 
     return $build;
+  }
+
+  public function createLink($target_bundle) {
+    if ($this->targetBundle === 'user') {
+      // TODO Create link to user fields page.
+      $link = $target_bundle->get('label');
+    }
+    else {
+      $link = Link::fromTextAndUrl($target_bundle->label(), $target_bundle->toUrl())->toString();;
+    }
+    return $link;
   }
 
   /**
@@ -160,7 +172,14 @@ class DocumentationListBuilder extends EntityListBuilder {
     $row = [
       'id' => Html::getClass($field_config->getName()),
       'data' => [
-        'label' => $field_config->getLabel(),
+        'label' => [
+          'data' => [
+            '#type' => 'link',
+            '#title' => $field_config->getLabel(),
+            '#url' => $field_config->toUrl("{$field_config->getTargetEntityTypeId()}-field-edit-form"),
+            '#options' => ['attributes' => ['title' => $this->t('Edit field settings.')]],
+          ],
+        ],
         'field_name' => $field_config->getName(),
         'field_type' => [
           'data' => [
@@ -191,7 +210,7 @@ class DocumentationListBuilder extends EntityListBuilder {
   public function getInfo($field_config) {
     $return = '';
     foreach ($field_config->getSettings() as $label => $value) {
-      $return .= "$label : $value". "<br>";
+      $return .= "$label : $value" . "<br>";
     }
     return $return;
   }
