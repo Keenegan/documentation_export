@@ -121,6 +121,7 @@ class DocumentationListBuilder extends EntityListBuilder {
 
   public function createLink($target_bundle) {
     $description = '';
+    // TODO replace user by a var.
     if ($this->targetBundle === 'user') {
       $link = Link::fromTextAndUrl(
         $target_bundle->getLabel(), Url::fromRoute('entity.user.field_ui_fields')

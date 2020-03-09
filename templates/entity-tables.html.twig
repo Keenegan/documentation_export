@@ -1,3 +1,6 @@
-{% for config_entity in data %}
-  {{ config_entity }}
+{% for label, config_entity_type in data %}
+  <h1>{{ label }}</h1>
+  {% for entity in config_entity_type %}
+    {{ entity }}
+  {% endfor %}
 {% endfor %}

@@ -88,12 +88,12 @@ class DocumentationExport {
       // Bundlables entities.
       if ($storage && $child_storage = $this->getStorage($storage->getEntityType()->getBundleOf())) {
         foreach ($storage->loadMultiple() as $entity) {
-          $data[] = $list_builder->render($storage->getEntityType()->getBundleOf(), $entity);
+          $data[$entity->getEntityType()->getLabel()->render()][] = $list_builder->render($storage->getEntityType()->getBundleOf(), $entity);
         }
       }
       // No bundlables entities (user).
       else {
-        $data[] = $list_builder->render($entity_type_id, $storage->getEntityType());
+        $data[$storage->getEntityType()->getLabel()->render()][] = $list_builder->render($entity_type_id, $storage->getEntityType());
       }
     }
 
