@@ -120,23 +120,21 @@ class DocumentationListBuilder extends EntityListBuilder {
   }
 
   public function createLink($target_bundle) {
-    $prefix = '';
     $description = '';
     if ($this->targetBundle === 'user') {
-      $link = Link::fromTextAndUrl($target_bundle->getLabel(), Url::fromRoute('entity.user.field_ui_fields'))
-        ->toString();
+      $link = Link::fromTextAndUrl(
+        $target_bundle->getLabel(), Url::fromRoute('entity.user.field_ui_fields')
+      )->toString();
     }
     else {
-      $link = Link::fromTextAndUrl($target_bundle->label(), $target_bundle->toUrl())
-        ->toString();
+      $link = Link::fromTextAndUrl(
+        $target_bundle->label(), $target_bundle->toUrl()
+      )->toString();
       if ($description = $target_bundle->getDescription()) {
         $description = $this->t('Description') . " : $description <br>";
       }
     }
-    $prefix .= "<h3>$link</h3>";
-    $prefix .= $description;
-    $prefix .= $this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
-    return $prefix;
+    return "<h3>$link</h3>$description" .$this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
   }
 
   /**
