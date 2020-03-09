@@ -83,7 +83,7 @@ class DocumentationExport {
     $list_builder = $this->entityTypeManager->createHandlerInstance('Drupal\documentation_export\DocumentationListBuilder', $definition);
 
     $data = [];
-    foreach (['node_type','taxonomy_vocabulary','media_type','paragraphs_type', 'user'] as $entity_type_id) {
+    foreach ($this->configFactory->get('content_types') as $entity_type_id) {
       $storage = $this->getStorage($entity_type_id);
       // Bundlables entities.
       if ($storage && $child_storage = $this->getStorage($storage->getEntityType()->getBundleOf())) {
@@ -130,6 +130,7 @@ class DocumentationExport {
     $this->moduleHandler->moduleExists('taxonomy') ? $result['taxonomy_vocabulary'] = $this->t('Vocabulary') : NULL;
     $this->moduleHandler->moduleExists('media') ? $result['media_type'] = $this->t('Media') : NULL;
     $this->moduleHandler->moduleExists('paragraphs') ? $result['paragraphs_type'] = $this->t('Paragraph') : NULL;
+    $this->moduleHandler->moduleExists('user') ? $result['user'] = $this->t('Users') : NULL;
 
     return $result;
   }
