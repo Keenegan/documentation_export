@@ -1,5 +1,5 @@
 documentation_export.configuration:
-  path: '/admin/documentation/configuration'
+  path: '/admin/reports/documentation/configuration'
   defaults:
     _form: '\Drupal\documentation_export\Form\ConfigurationForm'
     _title: 'Documentation export settings'
@@ -7,7 +7,7 @@ documentation_export.configuration:
     _permission: 'administer site configuration'
 
 documentation_export.entities:
-  path: '/admin/documentation'
+  path: '/admin/reports/documentation'
   defaults:
     _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::exportEntities'
     _title: 'Documentation'
@@ -15,7 +15,7 @@ documentation_export.entities:
     _permission: 'access documentation page'
 
 documentation_export.pdf:
-  path: '/admin/documentation/pdf'
+  path: '/admin/reports/documentation/pdf'
   defaults:
     _controller: '\Drupal\documentation_export\Controller\DocumentationExportController::printPdf'
     _title: 'Documentation'
