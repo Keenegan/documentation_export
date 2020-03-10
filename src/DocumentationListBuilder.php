@@ -129,7 +129,7 @@ class DocumentationListBuilder extends EntityListBuilder {
    */
   public function createTablePrefix($target_bundle) {
     $description = '';
-    if ($this->targetBundle === 'user') {
+    if (is_a($target_bundle, 'Drupal\Core\Entity\ContentEntityType')) {
       $link = Link::fromTextAndUrl(
         $target_bundle->getLabel(), Url::fromRoute('entity.user.field_ui_fields')
       )->toString();
