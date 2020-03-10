@@ -1,6 +1,6 @@
 # Documentation export
-This module provide an admin interface that display the config entities (like
-node type, media_type, paragraphs type and vocabulary), and their fields
+This module provides an admin interface that display the config entities (like
+node type, media_type, paragraphs type, vocabulary, users), and their fields
 configuration.
 
 This interface is used to help create technical documentation (with PDF export)
@@ -13,21 +13,6 @@ This module uses the library dompdf/dompdf, so it's required to install it with
  composer.
 
 ## Installation
-Add this to your composer.json file in the repository section :
 ```
-"type": "package",
-"package": {
-    "name": "drupal-keenegan/documentation_export",
-    "version": "1.0.0",
-    "type": "drupal-module",
-    "source": {
-        "url": "https://git.drupalcode.org/sandbox/Albin_Guignabert-3113362",
-        "type": "git",
-        "reference": "^1.0.0"
-    }
-}
-```
-And then use the command :
-```
-composer require drupal-keenegan/documentation_export
+composer require drupal/documentation_export
 ```
