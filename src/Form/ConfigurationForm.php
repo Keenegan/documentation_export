@@ -69,6 +69,12 @@ class ConfigurationForm extends ConfigFormBase {
       '#default_value' => $config->get('content_types'),
     ];
 
+    $form['show_entity_count'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show entities count'),
+      '#default_value' => $config->get('show_entity_count'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -78,6 +84,7 @@ class ConfigurationForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->configFactory->getEditable(static::SETTINGS)
       ->set('content_types', $form_state->getValue('content_types'))
+      ->set('show_entity_count', $form_state->getValue('show_entity_count'))
       ->save();
 
     parent::submitForm($form, $form_state);

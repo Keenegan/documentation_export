@@ -4,6 +4,8 @@ namespace Drupal\documentation_export;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Config\Config;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\DeprecatedServicePropertyTrait;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -68,6 +70,13 @@ class DocumentationListBuilder extends EntityListBuilder {
   protected $entityFieldManager;
 
   /**
+   * The module's configuration.
+   *
+   * @var \Drupal\Core\Config\ImmutableConfig
+   */
+  protected $config;
+
+  /**
    * Constructs a new class instance.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -78,16 +87,27 @@ class DocumentationListBuilder extends EntityListBuilder {
    *   The field type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface|null $entity_field_manager
    *   The entity field manager.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The module's configuration.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityTypeManagerInterface $entity_type_manager, FieldTypePluginManagerInterface $field_type_manager, EntityFieldManagerInterface $entity_field_manager = NULL) {
+  public function __construct(
+    EntityTypeInterface $entity_type,
+    EntityTypeManagerInterface $entity_type_manager,
+    FieldTypePluginManagerInterface $field_type_manager,
+    EntityFieldManagerInterface $entity_field_manager = NULL,
+    ConfigFactoryInterface $configFactory
+  ) {
     parent::__construct($entity_type, $entity_type_manager->getStorage($entity_type->id()));
-
     $this->entityTypeManager = $entity_type_manager;
     $this->fieldTypeManager = $field_type_manager;
     if (!$entity_field_manager) {
       $entity_field_manager = \Drupal::service('entity_field.manager');
     }
     $this->entityFieldManager = $entity_field_manager;
+    $this->config = $configFactory->get('documentation_export.settings');
   }
 
   /**
@@ -98,7 +118,8 @@ class DocumentationListBuilder extends EntityListBuilder {
       $entity_type,
       $container->get('entity_type.manager'),
       $container->get('plugin.manager.field.field_type'),
-      $container->get('entity_field.manager')
+      $container->get('entity_field.manager'),
+      $container->get('config.factory')
     );
   }
 
@@ -142,7 +163,11 @@ class DocumentationListBuilder extends EntityListBuilder {
         $description = $this->t('Description') . " : $description <br>";
       }
     }
-    return "<h3>$link</h3>$description" . $this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
+    $header = "<h3>$link</h3>$description" . $this->t('Machine name') . ' : ' . $target_bundle->id() . '<br>';
+    if ($this->config->get('show_entity_count') === 1) {
+      $header .= $this->t('Number of entities on the site') . ' : ' . $this->getEntityCount($target_bundle) . '<br>';
+    }
+    return $header;
   }
 
   /**
@@ -246,6 +271,26 @@ class DocumentationListBuilder extends EntityListBuilder {
       }
     }
     return new FormattableMarkup($return, []);
+  }
+
+  /**
+   * Count how many entities exists on the site.
+   *
+   * @param $field_config
+   *
+   * @return array|int
+   */
+  public function getEntityCount($field_config) {
+    if (is_a($field_config, 'Drupal\Core\Entity\ContentEntityType')) {
+      return $this->entityTypeManager->getStorage($field_config->id())->getQuery()->count()->execute();
+    }
+    else {
+      //WIP
+      return $this->entityTypeManager->getStorage($field_config->getEntityType()->getBundleOf())->getQuery()
+        ->condition('type', $field_config->id())
+        ->count()
+        ->execute();
+    }
   }
 
 }
