@@ -282,14 +282,24 @@ class DocumentationListBuilder extends EntityListBuilder {
    */
   public function getEntityCount($field_config) {
     if (is_a($field_config, 'Drupal\Core\Entity\ContentEntityType')) {
-      return $this->entityTypeManager->getStorage($field_config->id())->getQuery()->count()->execute();
+      return $this->entityTypeManager->getStorage($field_config->id())
+        ->getQuery()
+        ->count()
+        ->execute();
     }
     else {
       //WIP
-      return $this->entityTypeManager->getStorage($field_config->getEntityType()->getBundleOf())->getQuery()
-        ->condition('type', $field_config->id())
-        ->count()
-        ->execute();
+      $a = $field_config->getEntityType();
+      $entity_type = $field_config->getEntityType()->getBundleOf();
+      $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
+      if ($a->getKey('id')) {
+        $query->condition($a->getKey('id'), $field_config->id());
+      }
+      else {
+        return null;
+      }
+
+      return $query->count()->execute();
     }
   }
 
